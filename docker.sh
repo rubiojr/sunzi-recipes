@@ -18,3 +18,6 @@ sunzi.install docker-ce docker-ce-cli containerd.io
 
 sunzi.mute curl -s -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sunzi.mute chmod +x /usr/local/bin/docker-compose
+if [ -n "$SUDO_USER" ]; then
+  sunzi.mute gpasswd -a $SUDO_USER docker
+fi
