@@ -1,9 +1,17 @@
+set -e
+
 main() {
+  arch=$(uname -m)
+  march=$(echo $arch | sed s/armv7l/arm/ | sed s/x86_64/amd64/)
+  if [ "$arch" != x86_64 ] && [ "$arch" != armv7l ]; then
+    echo "syncthing: architecture not supported" >&2
+    return
+  fi
   if systemctl --user is-active --quiet syncthing; then
     return
   fi
-  stversion=1.5.0
-  sturl="https://github.com/syncthing/syncthing/releases/download/v$stversion/syncthing-linux-amd64-v$stversion.tar.gz"
+  stversion=1.6.1
+  sturl="https://github.com/syncthing/syncthing/releases/download/v$stversion/syncthing-linux-$march-v$stversion.tar.gz"
   tdir=$(mktemp -d /tmp/syncthingXXXXXX)
   
   curl -sL $sturl > $tdir/syncthing.tgz
